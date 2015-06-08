@@ -18,6 +18,18 @@
       "src/sha256.c",
       "src/pbkdf2.c",
     ],
+
+    "conditions": [
+      ["library == 'static_library'", {
+        "standalone_static_library": 1,
+      }],
+      ["library == 'shared_library' and GENERATOR == 'xcode'", {
+        "mac_bundle": 1,
+        "mac_framework_headers": [
+          "include/ispdy.h",
+        ],
+      }]
+    ],
   }, {
     "target_name": "test",
     "type": "executable",

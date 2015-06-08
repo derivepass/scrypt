@@ -32,9 +32,17 @@ def host_arch():
   return machine  # Return as-is and hope for the best.
 
 
+def run_cmd(args):
+  proc = subprocess.Popen(args, stdout=subprocess.PIPE)
+  ret = proc.communicate()[0].rstrip('\n')
+  if proc.returncode != 0:
+    print("Failed to run " + " ".join(args))
+    sys.exit(43)
+  return ret
+
+
 def compiler_version():
-  proc = subprocess.Popen(CC.split() + ['--version'], stdout=subprocess.PIPE)
-  is_clang = 'clang' in proc.communicate()[0].split('\n')[0]
+  is_clang = 'clang' in run_cmd(CC.split() + ['--version'])
   proc = subprocess.Popen(CC.split() + ['-dumpversion'], stdout=subprocess.PIPE)
   version = proc.communicate()[0].split('.')
   version = map(int, version[:2])
@@ -74,6 +82,24 @@ if __name__ == '__main__':
     args.extend(['-I', options_fn])
 
   args.append('--depth=' + root)
+
+  if sys.platform == 'darwin':
+      if not any(a.startswith('-Dsdk=') for a in args):
+        sdk = 'macosx'
+        args.append('-Dsdk=' + sdk);
+      else:
+        sdk = [arg for arg in args if arg.startswith('-Dsdk=')][0]
+        sdk = sdk.replace('-Dsdk=', '', 1)
+      sdk_path = run_cmd(['xcodebuild', '-version', '-sdk', sdk, 'Path'])
+      args.extend(['-Dsdk_path=' + sdk_path])
+
+      sdk_dev_path = run_cmd(['xcode-select', '-print-path'])
+      args.extend(['-Dsdk_dev_path=' + sdk_dev_path])
+
+      CC = run_cmd(['xcrun', '-find', 'clang', '-sdk', sdk])
+      os.environ['CC'] = CC;
+      os.environ['CXX'] = run_cmd(['xcrun', '-find', 'clang++', '-sdk', sdk]);
+      os.environ['LDPLUSPLUS'] = os.environ.get('CXX');
 
   # There's a bug with windows which doesn't allow this feature.
   if sys.platform != 'win32':

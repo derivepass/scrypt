@@ -8,6 +8,11 @@
     "msvs_multi_core_compile": "0",  # we do enable multicore compiles, but not using the V8 way
     "gcc_version%": "unknown",
     "clang%": 1,
+
+    # XCode settings for cross-compilation
+    "sdk%": "",
+    "sdk_path%": "",
+    "sdk_dev_path%": "",
   },
 
   "target_defaults": {
@@ -27,6 +32,7 @@
     },
 
     "xcode_settings": {
+      "SDKROOT": "<(sdk)",
       "GCC_VERSION": "com.apple.compilers.llvm.clang.1_0",
       "GCC_WARN_ABOUT_MISSING_NEWLINE": "YES",  # -Wnewline-eof
       "PREBINDING": "NO",                       # No -Wl,-prebind
@@ -40,15 +46,24 @@
         "-W",
         "-Wno-unused-parameter",
         "-Wundeclared-selector",
-        "-Wno-parentheses-equality",
       ],
     },
     "conditions": [
-      ["target_arch=='ia32'", {
-        "xcode_settings": {"ARCHS": ["i386"]},
+      ["OS == 'mac' and sdk == 'macosx'", {
+        "conditions": [
+          ["target_arch=='ia32'", {
+            "xcode_settings": {"ARCHS": ["i386"]},
+          }],
+          ["target_arch=='x64'", {
+            "xcode_settings": {"ARCHS": ["x86_64"]},
+          }],
+        ],
       }],
-      ["target_arch=='x64'", {
-        "xcode_settings": {"ARCHS": ["x86_64"]},
+      ["sdk.startswith('iphoneos')", {
+        "xcode_settings": {"ARCHS": ["armv7", "armv7s", "arm64"]},
+      }],
+      ["sdk.startswith('iphonesimulator')", {
+        "xcode_settings": {"ARCHS": ["x86_64", "i386"]},
       }],
       [ "OS in 'linux freebsd openbsd solaris'", {
         "target_conditions": [
@@ -67,6 +82,6 @@
           }],
         ],
       }],
-    ]
+    ],
   },
 }
