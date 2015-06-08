@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
   args.append('--depth=' + root)
 
-  if sys.platform == 'darwin':
+  if sys.platform == 'darwin' and 'ninja' not in args:
       if not any(a.startswith('-Dsdk=') for a in args):
         sdk = 'macosx'
         args.append('-Dsdk=' + sdk);
