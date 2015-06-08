@@ -23,7 +23,7 @@ struct scrypt_state_s {
 };
 
 int scrypt_state_init(scrypt_state_t* state);
-void scrypt_state_free(scrypt_state_t* state);
+void scrypt_state_destroy(scrypt_state_t* state);
 
 void scrypt(scrypt_state_t* state,
             const uint8_t* passphrase,

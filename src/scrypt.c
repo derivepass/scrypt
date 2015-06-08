@@ -265,7 +265,7 @@ failed_alloc_b:
 }
 
 
-void scrypt_state_free(scrypt_state_t* state) {
+void scrypt_state_destroy(scrypt_state_t* state) {
   free(state->v);
   free(state->x);
   free(state->t);

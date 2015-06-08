@@ -166,7 +166,7 @@ SCRYPT_TEST(scrypt_ro_mix) {
     ASSERT(0 == scrypt_state_init(&state), "Failed to alloc state");
 
     scrypt_ro_mix(&state, v->input, out);
-    scrypt_state_free(&state);
+    scrypt_state_destroy(&state);
 
     for (j = 0; j < ARRAY_SIZE(out); j++) {
       if (out[j] == v->expected[j])
@@ -279,7 +279,7 @@ SCRYPT_TEST(scrypt) {
            strlen(v->salt),
            out,
            sizeof(out));
-    scrypt_state_free(&state);
+    scrypt_state_destroy(&state);
 
     for (j = 0; j < ARRAY_SIZE(out); j++) {
       if (out[j] == v->expected[j])
