@@ -43,6 +43,7 @@ int main() {
 ```bash
 git clone git://github.com/indutny/scrypt
 cd scrypt
+git clone https://chromium.googlesource.com/external/gyp.git tools/gyp
 ./gyp_script
 make -C out/
 ./out/Release/test
@@ -75,4 +76,3 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [0]: https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-03
-
