@@ -8,6 +8,7 @@
 
 
 static int kScryptSalsaRounds = 4;
+static int kScryptPBKDF2Rounds = 1;
 static int kScryptBlockMultiplier = 128;
 
 static void scrypt_xor(const uint8_t* a,
@@ -63,7 +64,10 @@ void scrypt_block_mix(const uint8_t* b, unsigned int r, uint8_t* output) {
     scrypt_salsa20(t, kScryptSalsaRounds, x);
 
     /* Step 3 */
-    memcpy(&output[i * kSalsa20BlockSize], x, sizeof(x));
+    if (i % 2 == 0)
+      memcpy(&output[(i / 2) * kSalsa20BlockSize], x, sizeof(x));
+    else
+      memcpy(&output[(r + (i / 2)) * kSalsa20BlockSize], x, sizeof(x));
   }
 }
 
@@ -72,7 +76,7 @@ static uint64_t scrypt_integerify(scrypt_state_t* state, const uint8_t* x) {
   const uint8_t* p;
   uint64_t res;
 
-  p = &x[state->block_size - kScryptBlockMultiplier / 2];
+  p = &x[state->block_size - kSalsa20BlockSize];
   res = (uint64_t) p[0] + ((uint64_t) p[1] << 8) +
         ((uint64_t) p[2] << 16) + ((uint64_t) p[3] << 24) +
         ((uint64_t) p[4] << 32) + ((uint64_t) p[5] << 40) +
@@ -130,8 +134,14 @@ void scrypt_ro_mix(scrypt_state_t* state, const uint8_t* b, uint8_t* output) {
 
   /* Step 2 */
   for (i = 0; i < state->n; i++) {
+    uint8_t* s;
+
     memcpy(&v[state->block_size * i], x, state->block_size);
-    scrypt_block_mix(x, state->r, x);
+    scrypt_block_mix(x, state->r, t);
+
+    s = t;
+    t = x;
+    x = s;
   }
 
   /* Step 3 */
@@ -194,7 +204,7 @@ void scrypt(scrypt_state_t* state,
                        passphase_len,
                        salt,
                        salt_len,
-                       1,
+                       kScryptPBKDF2Rounds,
                        state->b,
                        state->p * state->block_size);
 
@@ -211,7 +221,7 @@ void scrypt(scrypt_state_t* state,
                        passphase_len,
                        state->b,
                        state->p * state->block_size,
-                       1,
+                       kScryptPBKDF2Rounds,
                        out,
                        out_len);
 }
