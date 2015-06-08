@@ -38,6 +38,17 @@ int main() {
 }
 ```
 
+## Building
+
+```bash
+git clone git://github.com/indutny/scrypt
+cd scrypt
+./gyp_script
+make -C out/
+./out/Release/test
+ls ./out/Release/libscrypt.a
+```
+
 #### LICENSE
 
 This software is licensed under the MIT License.
