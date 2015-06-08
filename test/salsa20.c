@@ -306,7 +306,7 @@ SCRYPT_TEST(salsa20_test_vectors) {
       }
     },
 
-    /* https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-03#page-10 */
+    /* https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-03#page-8 */
     {
       .rounds = 4,
       .input = {
