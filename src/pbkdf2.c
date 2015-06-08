@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "scrypt.h"
+#include "src/pbkdf2.h"
 #include "src/backend.h"
 #include "src/common.h"
 

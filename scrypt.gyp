@@ -13,7 +13,7 @@
     },
     "sources": [
       "src/backend.c",
-      "src/chacha.c",
+      "src/salsa20.c",
       "src/pbkdf2.c",
     ],
     "conditions": [
@@ -39,7 +39,7 @@
     "sources": [
       "test/test.c",
 
-      "test/chacha.c",
+      "test/salsa20.c",
       "test/pbkdf2.c",
     ],
   }]
