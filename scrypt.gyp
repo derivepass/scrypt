@@ -13,6 +13,7 @@
     },
     "sources": [
       "src/backend.c",
+      "src/hmac.c",
       "src/salsa20.c",
       "src/scrypt.c",
       "src/sha256.c",
@@ -41,6 +42,7 @@
     "sources": [
       "test/test.c",
 
+      "test/hmac.c",
       "test/salsa20.c",
       "test/sha256.c",
       "test/scrypt.c",

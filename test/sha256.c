@@ -132,7 +132,7 @@ SCRYPT_TEST(sha256) {
         0x79, 0x87, 0xcf, 0x0d,
         0x66, 0x43, 0x99, 0xcf
       }
-    },
+    }
   };
 
   for (i = 0; i < ARRAY_SIZE(tests); i++) {
