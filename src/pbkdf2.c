@@ -1,5 +1,10 @@
+#include <string.h>
+
 #include "scrypt.h"
 #include "src/backend.h"
+#include "src/common.h"
+
+#define MIN(a, b) ((a) > (b) ? (b) : (a))
 
 /* See: https://tools.ietf.org/html/rfc2898#section-5.2 */
 
@@ -31,6 +36,7 @@ void scrypt_pbkdf2_sha256(const uint8_t* password,
    *    Here, CEIL (x) is the "ceiling" function, i.e. the smallest
    *    integer greater than, or equal to, x.
    */
+  int i;
   int l;
   int r;
 
@@ -63,4 +69,47 @@ void scrypt_pbkdf2_sha256(const uint8_t* password,
    *    Here, INT (i) is a four-octet encoding of the integer i, most
    *    significant octet first.
    */
+  for (i = 1; i <= l; i++) {
+    unsigned int j;
+    uint8_t t[kSha256DigestSize];
+    uint8_t u[kSha256DigestSize];
+    uint8_t ctr[4];
+    const uint8_t* u1_data[] = { salt, ctr };
+    size_t u1_data_len[] = { salt_len, sizeof(ctr) };
+
+    ctr[0] = i >> 24;
+    ctr[1] = i >> 16;
+    ctr[2] = i >> 8;
+    ctr[3] = i;
+
+    /* U_1 = PRF (P, S || INT (i)) */
+    scrypt_hmac_sha256_vec(password,
+                           password_len,
+                           u1_data,
+                           u1_data_len,
+                           ARRAY_SIZE(u1_data),
+                           u);
+    memcpy(t, u, sizeof(u));
+
+    for (j = 2; j <= c; j++) {
+      uint8_t u_next[kSha256DigestSize];
+      size_t u_len;
+      size_t k;
+
+      u_len = sizeof(u);
+
+      /* U_c = PRF (P, U_{c-1}) */
+      scrypt_hmac_sha256(password, password_len, u, u_len, u_next);
+      memcpy(u, u_next, sizeof(u_next));
+
+      /* Xor Us */
+      for (k = 0; k < kSha256DigestSize; k++)
+        t[k] ^= u[k];
+    }
+
+    /* Copy out the results */
+    memcpy(&out[(i - 1) * kSha256DigestSize],
+           t,
+           MIN(out_len - (i - 1) * kSha256DigestSize, kSha256DigestSize));
+  }
 }

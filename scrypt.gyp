@@ -12,6 +12,7 @@
       ],
     },
     "sources": [
+      "src/backend.c",
       "src/chacha.c",
       "src/pbkdf2.c",
     ],
@@ -29,6 +30,10 @@
 
     "dependencies": [
       "scrypt",
+    ],
+
+    "include_dirs": [
+      "."
     ],
 
     "sources": [
