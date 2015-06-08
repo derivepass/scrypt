@@ -5,8 +5,6 @@
 #include "src/backend.h"
 #include "src/common.h"
 
-#define MIN(a, b) ((a) > (b) ? (b) : (a))
-
 /* See: https://tools.ietf.org/html/rfc2898#section-5.2 */
 
 void scrypt_pbkdf2_sha256(const uint8_t* password,

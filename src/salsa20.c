@@ -126,7 +126,10 @@ static uint32_t scrypt_salsa20_littleendian(const uint8_t* b) {
    * If b = (b0, b1, b2, b3) then littleendian(b) =
    * b0 + 2^8 * b1 + 2^16 * b2 + 2^24 * b3.
    */
-  return b[0] + (b[1] << 8) + (b[2] << 16) + (b[3] << 24);
+  return (uint32_t) b[0] |
+         ((uint32_t) b[1] << 8) |
+         ((uint32_t) b[2] << 16) |
+         ((uint32_t) b[3] << 24);
 }
 
 

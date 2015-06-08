@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "test/test.h"
 
@@ -45,10 +46,13 @@ int scrypt_compare_hex(const uint8_t* actual, const char* expected) {
 }
 
 
-int main() {
+int main(int argc, char** argv) {
   scrypt_test_t* cur;
 
   for (cur = tests; cur != NULL; cur = cur->next) {
+    if (argc == 2 && strcmp(cur->name, argv[1]) != 0)
+      continue;
+
     fprintf(stderr, "===== [%s] =====\n", cur->name);
     cur->fn(cur);
   }

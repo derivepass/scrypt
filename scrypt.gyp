@@ -15,6 +15,7 @@
       "src/backend.c",
       "src/salsa20.c",
       "src/scrypt.c",
+      "src/sha256.c",
       "src/pbkdf2.c",
     ],
     "conditions": [
@@ -41,6 +42,7 @@
       "test/test.c",
 
       "test/salsa20.c",
+      "test/sha256.c",
       "test/scrypt.c",
       "test/pbkdf2.c",
     ],
