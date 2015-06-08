@@ -13,16 +13,24 @@ struct scrypt_state_s {
 
   size_t block_size;
 
+  /* scrypt params */
+  uint8_t* b;
+
   /* ro_mix params */
   uint8_t* x;
   uint8_t* v;
   uint8_t* t;
 };
 
-int scrypt_state_init(scrypt_state_t* state,
-                      unsigned int r,
-                      unsigned int n,
-                      unsigned int p);
+int scrypt_state_init(scrypt_state_t* state);
 void scrypt_state_free(scrypt_state_t* state);
+
+void scrypt(scrypt_state_t* state,
+            const uint8_t* passphrase,
+            size_t passphase_len,
+            const uint8_t* salt,
+            size_t salt_len,
+            uint8_t* out,
+            size_t out_len);
 
 #endif  /* INCLUDE_SCRYPT_H_ */
