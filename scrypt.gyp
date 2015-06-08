@@ -12,20 +12,11 @@
       ],
     },
     "sources": [
-      "src/backend.c",
       "src/hmac.c",
       "src/salsa20.c",
       "src/scrypt.c",
       "src/sha256.c",
       "src/pbkdf2.c",
-    ],
-    "conditions": [
-      # Platform-specifics
-      ["OS == 'mac'", {
-        "sources": [
-          "src/backend/osx.c",
-        ],
-      }],
     ],
   }, {
     "target_name": "test",

@@ -2,7 +2,7 @@
 
 #include "scrypt.h"
 #include "src/pbkdf2.h"
-#include "src/backend.h"
+#include "src/hmac.h"
 #include "src/common.h"
 
 /* See: https://tools.ietf.org/html/rfc2898#section-5.2 */
@@ -73,8 +73,7 @@ void scrypt_pbkdf2_sha256(const uint8_t* password,
     uint8_t t[kSha256DigestSize];
     uint8_t u[kSha256DigestSize];
     uint8_t ctr[4];
-    const uint8_t* u1_data[] = { salt, ctr };
-    size_t u1_data_len[] = { salt_len, sizeof(ctr) };
+    scrypt_hmac_t hmac;
 
     ctr[0] = i >> 24;
     ctr[1] = i >> 16;
@@ -82,24 +81,22 @@ void scrypt_pbkdf2_sha256(const uint8_t* password,
     ctr[3] = i;
 
     /* U_1 = PRF (P, S || INT (i)) */
-    scrypt_hmac_sha256_vec(password,
-                           password_len,
-                           u1_data,
-                           u1_data_len,
-                           ARRAY_SIZE(u1_data),
-                           u);
+    scrypt_hmac_init(&hmac, password, password_len);
+    scrypt_hmac_update(&hmac, salt, salt_len);
+    scrypt_hmac_update(&hmac, ctr, sizeof(ctr));
+    scrypt_hmac_digest(&hmac, u);
     memcpy(t, u, sizeof(u));
 
     for (j = 2; j <= c; j++) {
-      uint8_t u_next[kSha256DigestSize];
       size_t u_len;
       size_t k;
 
       u_len = sizeof(u);
 
       /* U_c = PRF (P, U_{c-1}) */
-      scrypt_hmac_sha256(password, password_len, u, u_len, u_next);
-      memcpy(u, u_next, sizeof(u_next));
+      scrypt_hmac_init(&hmac, password, password_len);
+      scrypt_hmac_update(&hmac, u, u_len);
+      scrypt_hmac_digest(&hmac, u);
 
       /* Xor Us */
       for (k = 0; k < kSha256DigestSize; k++)
