@@ -44,7 +44,7 @@ int main() {
 git clone git://github.com/indutny/scrypt
 cd scrypt
 git clone https://chromium.googlesource.com/external/gyp.git tools/gyp
-./gyp_script
+./gyp_scrypt
 make -C out/
 ./out/Release/test
 ls ./out/Release/libscrypt.a
