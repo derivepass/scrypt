@@ -15,6 +15,8 @@ struct scrypt_test_s {
 
 void scrypt_add_test(scrypt_test_t* test);
 
+int scrypt_compare_hex(const uint8_t* actual, const char* expected);
+
 #if defined(_MSC_VER)
 # pragma section(".CRT$XCU", read)
 # define SCRYPT_C_CTOR(fn)                                                    \

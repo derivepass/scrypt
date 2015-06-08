@@ -46,7 +46,6 @@ SCRYPT_TEST(pbkdf2_test_vectors) {
   for (i = 0; i < ARRAY_SIZE(tests); i++) {
     pbkdf2_test_vector_t* v;
     uint8_t out[1024];
-    int j;
 
     v = &tests[i];
     ASSERT(v->dkLen <= sizeof(out), "Not enough space for dkLen");
@@ -59,32 +58,6 @@ SCRYPT_TEST(pbkdf2_test_vectors) {
                          out,
                          v->dkLen);
 
-    for (j = 0; v->expected[j] != '\0'; j += 2) {
-      char hi;
-      char lo;
-      uint8_t ch;
-
-      hi = v->expected[j];
-      lo = v->expected[j + 1];
-      if ('0' <= hi && hi <= '9')
-        ch = hi - '0';
-      else
-        ch = (hi - 'a') + 0xa;
-      ch <<= 4;
-      if ('0' <= lo && lo <= '9')
-        ch |= lo - '0';
-      else
-        ch |= (lo - 'a') + 0xa;
-
-      if (out[j / 2] != ch) {
-        fprintf(stderr,
-                "DK mismatch: 0x%02x instead of 0x%02x at %d (vec: %d)\n",
-                out[j / 2],
-                ch,
-                j,
-                (int) i);
-        ASSERT(0, "DK mismatch");
-      }
-    }
+    ASSERT(scrypt_compare_hex(out, v->expected) == 0, "DK mismatch");
   }
 }

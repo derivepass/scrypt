@@ -37,7 +37,7 @@
     ],
 
     "sources": [
-      "test/main.c",
+      "test/test.c",
 
       "test/chacha.c",
       "test/pbkdf2.c",
