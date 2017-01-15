@@ -37,6 +37,7 @@
       "GCC_WARN_ABOUT_MISSING_NEWLINE": "YES",  # -Wnewline-eof
       "PREBINDING": "NO",                       # No -Wl,-prebind
       "OTHER_CFLAGS": [
+        "-fembed-bitcode",
         "-fstrict-aliasing",
         "-g",
       ],
