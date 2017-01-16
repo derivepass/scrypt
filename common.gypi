@@ -36,6 +36,7 @@
       "GCC_VERSION": "com.apple.compilers.llvm.clang.1_0",
       "GCC_WARN_ABOUT_MISSING_NEWLINE": "YES",  # -Wnewline-eof
       "PREBINDING": "NO",                       # No -Wl,-prebind
+      "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
       "OTHER_CFLAGS": [
         "-fembed-bitcode",
         "-fstrict-aliasing",
