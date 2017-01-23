@@ -1,5 +1,8 @@
 #ifndef INCLUDE_SCRYPT_H_
 #define INCLUDE_SCRYPT_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>  /* uint8_t */
 #include <stdlib.h>  /* size_t */
@@ -33,4 +36,7 @@ void scrypt(scrypt_state_t* state,
             uint8_t* out,
             size_t out_len);
 
+#ifdef __cplusplus
+}
+#endif
 #endif  /* INCLUDE_SCRYPT_H_ */
