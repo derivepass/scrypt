@@ -35,9 +35,9 @@ void scrypt_pbkdf2_sha256(const uint8_t* password,
    *    Here, CEIL (x) is the "ceiling" function, i.e. the smallest
    *    integer greater than, or equal to, x.
    */
-  int i;
-  int l;
-  int r;
+  size_t i;
+  size_t l;
+  size_t r;
 
   l = (out_len + kSha256DigestSize - 1) / kSha256DigestSize;
   r = out_len - (l - 1) * kSha256DigestSize;
