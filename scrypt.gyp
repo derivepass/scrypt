@@ -1,7 +1,12 @@
 {
   "targets": [{
     "target_name": "scrypt",
-    "type": "<(library)",
+    "type": "<!(gypkg type)",
+
+    "direct_dependent_settings": {
+      "include_dirs": [ "include" ],
+    },
+
     "include_dirs": [
       ".",
       "include",
@@ -32,6 +37,7 @@
     ],
   }, {
     "target_name": "test",
+    "type": "<!(gypkg type)",
     "type": "executable",
 
     "dependencies": [
