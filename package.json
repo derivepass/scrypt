@@ -1,6 +1,6 @@
 {
   "name": "scrypt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Dumb and simple verifiable implementation of scrypt",
   "scripts": {
