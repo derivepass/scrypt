@@ -2,6 +2,7 @@
 #define TEST_TEST_H_
 
 #include <stdlib.h>  /* NULL */
+#include <stdint.h>  /* uint8_t */
 
 typedef struct scrypt_test_s scrypt_test_t;
 typedef void (*scrypt_test_fn)(scrypt_test_t* test);

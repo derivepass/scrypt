@@ -1,5 +1,7 @@
 # Dumb scrypt
 
+[![Build Status](https://secure.travis-ci.org/indutny/scrypt.svg)](http://travis-ci.org/indutny/scrypt)
+
 Dumb and simple verifiable implementation of [scrypt][0]
 
 ## Usage
@@ -41,20 +43,20 @@ int main() {
 ## Building
 
 ```bash
-git clone git://github.com/indutny/scrypt
-cd scrypt
-git clone https://chromium.googlesource.com/external/gyp.git tools/gyp
-./gyp_scrypt
-make -C out/
-./out/Release/test
-ls ./out/Release/libscrypt.a
+npm install && npm test
+ls -la ./out/Release/libscrypt.a
 ```
+
+## Using as dependency
+
+This project uses [gypkg][1] as a build tool. Please refer to its readme to
+use this project as dependency.
 
 #### LICENSE
 
 This software is licensed under the MIT License.
 
-Copyright Fedor Indutny, 2015.
+Copyright Fedor Indutny, 2017.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
@@ -76,3 +78,4 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [0]: https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-03
+[1]: http://gypkg.io/
