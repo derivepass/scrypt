@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MIN(a, b) ((a) > (b) ? (b) : (a))
+#ifndef MIN
+# define MIN(a, b) ((a) > (b) ? (b) : (a))
+#endif  /* MIN */
 
 #ifndef ARRAY_SIZE
 # define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))
